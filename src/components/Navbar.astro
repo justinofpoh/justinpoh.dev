@@ -1,0 +1,224 @@
+---
+const pathname = Astro.url.pathname;
+const links = [
+	{ label: 'Home', href: '/' },
+	{ label: 'About', href: '/about' },
+	{ label: 'Work', href: '/work' },
+	{ label: 'Notes', href: '/notes' },
+	{ label: 'Life', href: '/life' },
+	{ label: 'Now', href: '/now' },
+	{ label: 'Contact', href: '/contact' },
+];
+---
+
+<header class="site-header">
+	<div class="masthead">
+		<a class="wordmark" href="/" aria-label="Justin Poh, home">justin poh</a>
+		<p class="descriptor">what thread of curiosity might you choose to follow next?</p>
+	</div>
+
+	<nav class="navbar" aria-label="Primary navigation">
+		<ul class="nav-links">
+			{
+				links.map(({ label, href }) => (
+					<li>
+						<a href={href} aria-current={pathname === href ? 'page' : undefined}>
+							{label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+
+	<figure class="site-banner">
+		<img src="/images/about-hero-annapurna-no-hiker.png" alt="A panoramic view of the Annapurna mountain range" />
+		<figcaption>Annapurna Base Camp, Dec 2025</figcaption>
+	</figure>
+</header>
+
+<style>
+	:global(:root) {
+		--paper: #202120;
+		--ink: #c5c0b6;
+		--muted-ink: #aaa59b;
+		--rule: rgba(197, 192, 182, 0.2);
+	}
+
+	.site-header {
+		width: min(calc(100% - 2rem), 68.571rem);
+		margin: 3.428rem auto 0;
+		padding: 1.714rem 2.857rem 0;
+		box-sizing: border-box;
+		background: var(--paper);
+	}
+
+	.masthead {
+		padding-bottom: 1.714rem;
+	}
+
+	.wordmark {
+		display: inline-block;
+		color: var(--ink);
+		font-family: 'Open Sans', sans-serif;
+		font-size: clamp(1.9rem, 2.5vw, 2.75rem);
+		font-weight: 700;
+		letter-spacing: -0.065em;
+		line-height: 0.96;
+		text-decoration: none;
+	}
+
+	.descriptor {
+		margin: 1.25rem 0 0;
+		color: var(--muted-ink);
+		font-family: 'Open Sans', sans-serif;
+		font-size: clamp(0.95rem, 1.05vw, 1.18rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+	}
+
+	.navbar {
+		border-top: 1px solid var(--rule);
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.site-banner {
+		position: relative;
+		height: clamp(8rem, 14vw, 10rem);
+		margin: 2.1rem 0 0;
+		overflow: hidden;
+		border-radius: 0.35rem;
+		background: #2a2c2b;
+	}
+
+	.site-banner img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 52%;
+	}
+
+	.site-banner figcaption {
+		position: absolute;
+		right: 1rem;
+		bottom: 0.85rem;
+		margin: 0;
+		padding: 0.35rem 0.5rem;
+		background: rgba(19, 29, 42, 0.5);
+		color: rgba(255, 255, 255, 0.9);
+		font-family: 'Open Sans', sans-serif;
+		font-size: 0.68rem;
+		font-weight: 400;
+		letter-spacing: 0.025em;
+		line-height: 1.2;
+	}
+
+	.nav-links {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		min-height: clamp(4.6rem, 5.2vw, 5.55rem);
+		margin: 0;
+		padding: 0;
+		gap: 1.5rem;
+		list-style: none;
+	}
+
+	.nav-links a {
+		position: relative;
+		display: block;
+		padding: 0.35rem 0;
+		color: var(--muted-ink);
+		font-family: 'Open Sans', sans-serif;
+		font-size: clamp(0.76rem, 0.88vw, 0.92rem);
+		font-weight: 400;
+		letter-spacing: -0.025em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: color 180ms ease;
+	}
+
+	.nav-links a::after {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		background: var(--ink);
+		content: '';
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform 180ms ease;
+	}
+
+	.nav-links a:hover,
+	.nav-links a:focus-visible,
+	.nav-links a[aria-current='page'] {
+		color: var(--ink);
+	}
+
+	.nav-links a:hover::after,
+	.nav-links a:focus-visible::after,
+	.nav-links a[aria-current='page']::after {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+
+	.wordmark:focus-visible,
+	.nav-links a:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 5px;
+	}
+
+	@media (max-width: 640px) {
+		.navbar {
+			margin-inline: 0;
+		}
+
+		.site-header {
+			width: calc(100% - 1.5rem);
+			margin: 1.5rem auto 0;
+			padding: 3rem 1.5rem 0;
+		}
+
+		.masthead {
+			padding-bottom: 3rem;
+		}
+
+		.nav-links {
+			justify-content: flex-start;
+			overflow-x: auto;
+			gap: 1.75rem;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+		}
+
+		.nav-links::-webkit-scrollbar {
+			display: none;
+		}
+
+		.nav-links a {
+			font-size: 0.82rem;
+			white-space: nowrap;
+		}
+
+		.site-banner {
+			height: 8rem;
+			margin-top: 1.5rem;
+		}
+
+		.site-banner figcaption {
+			right: 0.65rem;
+			bottom: 0.65rem;
+			font-size: 0.6rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nav-links a,
+		.nav-links a::after {
+			transition: none;
+		}
+	}
+</style>

@@ -1,0 +1,123 @@
+---
+interface Props {
+	eyebrow: string;
+	title: string;
+	intro: string;
+	topQuote?: string;
+	hideIntro?: boolean;
+}
+
+const { eyebrow, title, intro, topQuote, hideIntro = false } = Astro.props;
+---
+
+<main class="page-content">
+	{topQuote && <p class="top-quote">{topQuote}</p>}
+	{
+		!hideIntro && (
+			<header class="page-intro">
+				<p class="eyebrow">{eyebrow}</p>
+				<h1>{title}</h1>
+				<p class="intro">{intro}</p>
+			</header>
+		)
+	}
+	<div class:list={['page-body', { 'page-body--standalone': hideIntro }]}>
+		<slot />
+	</div>
+</main>
+
+<style>
+	.page-content {
+		width: min(calc(100% - 2rem), 68.571rem);
+		margin: 0 auto 3.428rem;
+		padding: 3.75rem 2.857rem 3.5rem;
+		box-sizing: border-box;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	.page-intro,
+	.page-body {
+		max-width: 37rem;
+	}
+
+	.top-quote {
+		width: 100%;
+		max-width: none;
+		margin: 0 auto 2.5rem;
+		padding: 0.85rem 1.15rem;
+		box-sizing: border-box;
+		background: rgba(197, 192, 182, 0.06);
+		color: var(--muted-ink);
+		font-size: 0.92rem;
+		letter-spacing: 0.01em;
+		line-height: 1.45;
+		text-align: center;
+	}
+
+	.eyebrow {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 0.74rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		margin: 0.8rem 0 1rem;
+		font-size: clamp(1.75rem, 3vw, 2.65rem);
+		font-weight: 700;
+		letter-spacing: -0.055em;
+		line-height: 1.08;
+	}
+
+	.intro,
+	:global(.page-section p),
+	:global(.page-section li) {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+
+	.page-body {
+		padding-top: 3.5rem;
+	}
+
+	.page-body--standalone {
+		max-width: none;
+		padding-top: 0;
+	}
+
+	:global(.page-section) {
+		padding: 1.6rem 0;
+		border-top: 1px solid var(--rule);
+	}
+
+	:global(.page-section h2) {
+		margin: 0 0 0.55rem;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.075em;
+		text-transform: uppercase;
+	}
+
+	:global(.page-section ul) {
+		margin: 0;
+		padding-left: 1.15rem;
+	}
+
+	:global(.page-section a) {
+		color: var(--ink);
+		text-underline-offset: 0.2em;
+	}
+
+	@media (max-width: 640px) {
+		.page-content {
+			width: calc(100% - 1.5rem);
+			margin: 0 auto 1.5rem;
+			padding: 3rem 1.5rem;
+		}
+	}
+</style>

@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import PageContent from '../components/PageContent.astro';
+---
+
+<Layout>
+	<Navbar />
+	<PageContent
+		eyebrow="Notes"
+		title="Notes from the workbench."
+		intro="Small observations about products, technology, craft, and the ideas that deserve a closer look."
+	>
+		<section class="page-section">
+			<h2>Latest</h2>
+			<p>Writing is on its way. In the meantime, the now page is the best view of what has my attention.</p>
+		</section>
+	</PageContent>
+</Layout>

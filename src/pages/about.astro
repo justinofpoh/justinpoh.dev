@@ -1,0 +1,211 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+---
+
+<Layout>
+	<Navbar />
+	<main class="about-page">
+		<div class="about-grid">
+			<article class="bio">
+				<h1>Who’s justin poh?</h1>
+				<figure class="portrait portrait-mobile">
+					<img src="/images/about-photo.jpg" alt="Justin Poh" />
+				</figure>
+				<p>
+					I’m a penultimate student at Singapore Management University studying Information Systems. Currently, I am away from school to pursue development in Apple platforms at the{' '}
+					<a href="https://developer.apple.com/academies/" target="_blank" rel="noreferrer">Apple Developer Academy</a>.
+				</p>
+				<p>
+					In school, I led the{' '}
+					<a
+						href="https://www.linkedin.com/posts/sgsmuscis_computingatsmu-sgsmuscis-beyondtech-activity-7449260762180677632-UXg0/"
+						target="_blank"
+						rel="noreferrer"
+					>product space</a
+					>{' '}and gained experience{' '}
+					<a href="https://protege.vc/" target="_blank" rel="noreferrer">analyzing live startup deals</a>. It led me into an entrepreneurial role in tech, where I launched my{' '}
+					<a
+						href="https://apps.apple.com/id/app/aprecis-read-ai-papers/id6766909567"
+						target="_blank"
+						rel="noreferrer"
+					>first iOS app</a
+					>{' '}in April 2026.
+				</p>
+				<p>
+					I enjoy reading widely across markets, technology, and world affairs. I would like to start writing more about these online; you can check it out{' '}
+					<a href="/notes">here</a>.
+				</p>
+			</article>
+
+			<aside class="sidebar" aria-label="Explore the site">
+				<figure class="portrait portrait-desktop">
+					<img src="/images/about-photo.jpg" alt="Justin Poh" />
+				</figure>
+				<h2>Elsewhere</h2>
+				<ul>
+					<li><a href="/work">Selected work</a></li>
+					<li><a href="/notes">Notes</a></li>
+					<li><a href="/now">Now</a></li>
+				</ul>
+			</aside>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.about-page {
+		display: flow-root;
+		width: min(calc(100% - 2rem), 68.571rem);
+		margin: 0 auto 3.428rem;
+		padding: 0 2.857rem 4.75rem;
+		box-sizing: border-box;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	.about-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.7fr) minmax(11rem, 0.8fr);
+		gap: clamp(3rem, 10vw, 8rem);
+		margin-top: clamp(3.5rem, 6vw, 5.8rem);
+	}
+
+	.bio {
+		max-width: 38rem;
+	}
+
+	h1 {
+		margin: 0 0 2.4rem;
+		font-size: clamp(1.9rem, 3.1vw, 2.75rem);
+		font-weight: 400;
+		letter-spacing: -0.055em;
+		line-height: 1.08;
+	}
+
+	.bio p {
+		margin: 0 0 1.65rem;
+		color: var(--ink);
+		font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+		line-height: 1.76;
+	}
+
+	a {
+		color: inherit;
+		text-decoration-color: rgba(197, 192, 182, 0.55);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
+	}
+
+	a:hover,
+	a:focus-visible {
+		color: #fffdf7;
+		text-decoration-color: currentColor;
+	}
+
+	.sidebar {
+		padding-top: 0.58rem;
+	}
+
+	.portrait {
+		width: min(100%, 12rem);
+		aspect-ratio: 1;
+		margin: 0 0 3.25rem;
+		overflow: hidden;
+		border-radius: 0.35rem;
+		background: #2a2c2b;
+	}
+
+	.portrait-mobile {
+		display: none;
+	}
+
+	.portrait img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 36%;
+	}
+
+	.sidebar h2 {
+		margin: 0 0 2.2rem;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+	}
+
+	.sidebar ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.sidebar li + li {
+		margin-top: 0.8rem;
+	}
+
+	.sidebar a {
+		color: var(--muted-ink);
+		font-size: 0.9rem;
+	}
+
+	@media (max-width: 700px) {
+		.about-page {
+			width: calc(100% - 1.5rem);
+			margin: 0 auto 1.5rem;
+			padding: 0 1.5rem 3rem;
+		}
+
+		.about-grid {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+			margin-top: 3.25rem;
+		}
+
+		h1 {
+			margin-bottom: 1.7rem;
+		}
+
+		.sidebar {
+			padding-top: 1.5rem;
+			border-top: 1px solid var(--rule);
+		}
+
+		.portrait-mobile {
+			display: block;
+			float: right;
+			width: min(42%, 8rem);
+			margin: 0 0 0.85rem 1rem;
+		}
+
+		.portrait-desktop {
+			display: none;
+		}
+
+		.bio > p:first-of-type {
+			min-height: 8rem;
+		}
+
+		.portrait {
+			width: min(100%, 10rem);
+			margin-bottom: 2rem;
+		}
+
+		.sidebar h2 {
+			margin-bottom: 1rem;
+		}
+
+		.sidebar ul {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem 1.25rem;
+		}
+
+		.sidebar li + li {
+			margin-top: 0;
+		}
+	}
+</style>

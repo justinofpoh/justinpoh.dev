@@ -1,0 +1,97 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+---
+
+<Layout>
+	<Navbar />
+	<main class="now-page">
+		<header class="page-intro">
+			<p class="eyebrow">Now</p>
+			<h1>What I’m focused on lately.</h1>
+			<p>
+				A living snapshot of the projects, ideas, and questions currently taking up space in my head.
+			</p>
+		</header>
+
+		<section class="now-section" aria-labelledby="right-now">
+			<h2 id="right-now">Right now</h2>
+			<p>Building, learning, and following the threads that feel worth pulling.</p>
+		</section>
+
+		<section class="now-section" aria-labelledby="on-the-side">
+			<h2 id="on-the-side">On the side</h2>
+			<p>Collecting references, making small things, and keeping room for curiosity.</p>
+		</section>
+
+		<p class="updated">Last updated August 2026.</p>
+	</main>
+</Layout>
+
+<style>
+	.now-page {
+		width: min(calc(100% - 2rem), 68.571rem);
+		margin: -3.428rem auto 3.428rem;
+		padding: 3.75rem 2.857rem 3.5rem;
+		box-sizing: border-box;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	.page-intro {
+		max-width: 37rem;
+		padding-bottom: 3.5rem;
+	}
+
+	.eyebrow,
+	.updated {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 0.74rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		margin: 0.8rem 0 1rem;
+		font-size: clamp(1.75rem, 3vw, 2.65rem);
+		font-weight: 700;
+		letter-spacing: -0.055em;
+		line-height: 1.08;
+	}
+
+	.page-intro > p:not(.eyebrow),
+	.now-section p {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+
+	.now-section {
+		max-width: 37rem;
+		padding: 1.6rem 0;
+		border-top: 1px solid var(--rule);
+	}
+
+	h2 {
+		margin: 0 0 0.55rem;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.075em;
+		text-transform: uppercase;
+	}
+
+	.updated {
+		margin-top: 2.4rem;
+	}
+
+	@media (max-width: 640px) {
+		.now-page {
+			width: calc(100% - 1.5rem);
+			margin: -1.5rem auto 1.5rem;
+			padding: 3rem 1.5rem;
+		}
+	}
+</style>

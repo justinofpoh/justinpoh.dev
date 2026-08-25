@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import PageContent from '../components/PageContent.astro';
+import ChessStats from '../components/ChessStats.astro';
+---
+
+<Layout>
+	<Navbar />
+	<PageContent
+		eyebrow="Life"
+		title=""
+		intro=""
+		topQuote='"What can be measured can be managed, and what can be managed can be improved."'
+		hideIntro
+	>
+		<ChessStats />
+	</PageContent>
+</Layout>
