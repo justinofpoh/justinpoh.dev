@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import { getCollection, render } from 'astro:content';
+import { NOTE_CATEGORY_EMOJI, formatNoteDate, formatNoteDateISO } from '../../lib/notes';
+
+export async function getStaticPaths() {
+	const notes = await getCollection('notes', ({ data }) => !data.external);
+	return notes.map((note) => ({
+		params: { slug: note.id },
+		props: { note },
+	}));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+const emoji = NOTE_CATEGORY_EMOJI[note.data.category];
+const date = formatNoteDate(note.data.date);
+const dateISO = formatNoteDateISO(note.data.date);
+const meta = note.data.tags.length
+	? `_${note.data.category} ${emoji}, ${note.data.tags.join(', ')}`
+	: `_${note.data.category} ${emoji}`;
+---
+
+<Layout>
+	<Navbar />
+	<main class="note-page">
+		<article>
+			<p class="meta">
+				<time datetime={dateISO}>{date}</time>
+				<span> · {meta}</span>
+			</p>
+			<h1>{note.data.title}</h1>
+			<div class="body">
+				<Content />
+			</div>
+			<p class="back"><a href="/notes">All notes</a></p>
+		</article>
+	</main>
+</Layout>
+
+<style>
+	.note-page {
+		width: min(calc(100% - 2rem), 68.571rem);
+		margin: 0 auto 3.428rem;
+		padding: 3.25rem 2.857rem 3.5rem;
+		box-sizing: border-box;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	article {
+		max-width: 40rem;
+	}
+
+	.meta {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 0.84rem;
+		line-height: 1.5;
+	}
+
+	h1 {
+		margin: 0.7rem 0 1.6rem;
+		font-size: clamp(1.7rem, 3vw, 2.4rem);
+		font-weight: 700;
+		letter-spacing: -0.05em;
+		line-height: 1.12;
+	}
+
+	.body :global(p) {
+		margin: 0 0 1.15rem;
+		color: var(--muted-ink);
+		font-size: 1.02rem;
+		line-height: 1.72;
+	}
+
+	.back {
+		margin: 2.4rem 0 0;
+		padding-top: 1.4rem;
+		border-top: 1px solid var(--rule);
+	}
+
+	.back a {
+		color: #6ea8ff;
+		text-underline-offset: 0.16em;
+	}
+
+	@media (max-width: 640px) {
+		.note-page {
+			width: calc(100% - 1.5rem);
+			margin: 0 auto 1.5rem;
+			padding: 2.5rem 1.5rem 3rem;
+		}
+	}
+</style>

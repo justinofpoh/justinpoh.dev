@@ -1,0 +1,12 @@
+---
+title: Notes from the Apple Developer Academy
+date: 2026-06-11
+category: Lab Notes
+tags:
+  - Apple
+  - iOS
+---
+
+A few months into the Academy, the useful lesson is still the same: make something small, put it in front of people, and notice where the story falls apart.
+
+I am keeping lab notes here as the work accumulates, especially the parts that do not belong in a case study yet.

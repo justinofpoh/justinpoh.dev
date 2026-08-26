@@ -36,6 +36,24 @@ import Navbar from '../components/Navbar.astro';
 					I enjoy reading widely across markets, technology, and world affairs. I would like to start writing more about these online; you can check it out{' '}
 					<a href="/notes">here</a>.
 				</p>
+
+				<section class="personal-links" aria-labelledby="links-title">
+					<h2 id="links-title">Links</h2>
+					<ul>
+						<li>
+							LinkedIn:{' '}
+							<a href="https://www.linkedin.com/in/justinofpoh/" target="_blank" rel="noreferrer">justinofpoh</a>
+						</li>
+						<li>
+							GitHub:{' '}
+							<a href="https://github.com/justinofpoh" target="_blank" rel="noreferrer">justinofpoh</a>
+						</li>
+						<li>
+							Email:{' '}
+							<a href="mailto:justin.poh.2024@computing.smu.edu.sg">justin.poh.2024@computing.smu.edu.sg</a>
+						</li>
+					</ul>
+				</section>
 			</article>
 
 			<aside class="sidebar" aria-label="Explore the site">
@@ -86,6 +104,32 @@ import Navbar from '../components/Navbar.astro';
 
 	.bio p {
 		margin: 0 0 1.65rem;
+		color: var(--ink);
+		font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+		line-height: 1.76;
+	}
+
+	.personal-links {
+		margin-top: 3.2rem;
+		padding-top: 2.8rem;
+		border-top: 1px solid var(--rule);
+	}
+
+	.personal-links h2 {
+		margin: 0 0 1.65rem;
+		font-size: clamp(1.35rem, 2.1vw, 1.7rem);
+		font-weight: 700;
+		letter-spacing: -0.045em;
+		line-height: 1.1;
+	}
+
+	.personal-links ul {
+		margin: 0;
+		padding-left: 1.35rem;
+	}
+
+	.personal-links li {
+		padding-left: 0.15rem;
 		color: var(--ink);
 		font-size: clamp(0.95rem, 1.3vw, 1.08rem);
 		line-height: 1.76;
@@ -187,6 +231,11 @@ import Navbar from '../components/Navbar.astro';
 
 		.bio > p:first-of-type {
 			min-height: 8rem;
+		}
+
+		.personal-links {
+			margin-top: 2.7rem;
+			padding-top: 2.2rem;
 		}
 
 		.portrait {

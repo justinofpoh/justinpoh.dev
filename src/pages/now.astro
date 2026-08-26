@@ -1,97 +1,264 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
+import { noteHref } from '../lib/notes';
+
+const latestNotes = (await getCollection('notes'))
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 5);
 ---
 
 <Layout>
 	<Navbar />
 	<main class="now-page">
-		<header class="page-intro">
-			<p class="eyebrow">Now</p>
-			<h1>What I’m focused on lately.</h1>
-			<p>
-				A living snapshot of the projects, ideas, and questions currently taking up space in my head.
-			</p>
-		</header>
+		<div class="now-layout">
+			<article class="now-content">
+				<h1>What’s justin poh up to?</h1>
 
-		<section class="now-section" aria-labelledby="right-now">
-			<h2 id="right-now">Right now</h2>
-			<p>Building, learning, and following the threads that feel worth pulling.</p>
-		</section>
+				<p class="now-explainer">
+					This is my <a href="https://nownownow.com/about" target="_blank" rel="noreferrer">now page</a>.
+				</p>
 
-		<section class="now-section" aria-labelledby="on-the-side">
-			<h2 id="on-the-side">On the side</h2>
-			<p>Collecting references, making small things, and keeping room for curiosity.</p>
-		</section>
+				<section class="now-update" aria-labelledby="august-2026">
+					<h2 id="august-2026">August 2026:</h2>
+					<ul>
+						<li>
+							Working with computer vision and 3D modeling for a{' '}
+							<a href="https://coralfull.app" target="_blank" rel="noreferrer">coral health monitoring project</a>{' '}
+							alongside <a href="https://www.livingseas.asia/" target="_blank" rel="noreferrer">Livingseas</a>{' '}
+							in the <a href="https://developer.apple.com/academies/" target="_blank" rel="noreferrer">Apple Developer Academy</a>.
+						</li>
+						<li>
+							Preparing for internship applications (the birth of this webpage!). The goal is{' '}
+							<a
+								href="https://jobs.apple.com/en-us/details/200675982-3278/2027-apple-internship-information-systems-and-technology?team=STDNT"
+								target="_blank"
+								rel="noreferrer"
+							>Apple Technology Internship 2028</a>.
+						</li>
+						<li>
+							Tinkering a lot with IoT (I just learned to solder this month), building random things, most recently a{' '}
+							<a href="https://lnkd.in/p/guAt872T" target="_blank" rel="noreferrer">plant moisture sensor</a>.
+						</li>
+						<li>Rehabbing after tearing my knee (ACL and MCL) three months ago (somehow managed to PB for 10K this month :p).</li>
+					</ul>
+				</section>
 
-		<p class="updated">Last updated August 2026.</p>
+				<details class="past-updates">
+					<summary>Past</summary>
+					<div>
+						<p class="past-empty">Nothing to see here.</p>
+					</div>
+				</details>
+			</article>
+
+			<aside class="sidebar" aria-label="More to explore">
+				<section class="sidebar-section" aria-labelledby="latest-notes">
+					<h2 id="latest-notes">Latest notes</h2>
+					<ul>
+						{
+							latestNotes.map((note) => (
+								<li><a href={noteHref(note)}>{note.data.title}</a></li>
+							))
+						}
+					</ul>
+				</section>
+
+				<section class="sidebar-section" aria-labelledby="elsewhere">
+					<h2 id="elsewhere">Elsewhere</h2>
+					<ul>
+						<li><a href="/work">Selected work</a></li>
+						<li><a href="/about">About me</a></li>
+						<li><a href="/notes">All notes</a></li>
+						<li><a href="https://www.linkedin.com/in/justinofpoh/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+					</ul>
+				</section>
+			</aside>
+		</div>
 	</main>
 </Layout>
 
 <style>
 	.now-page {
+		display: flow-root;
 		width: min(calc(100% - 2rem), 68.571rem);
-		margin: -3.428rem auto 3.428rem;
-		padding: 3.75rem 2.857rem 3.5rem;
+		margin: 0 auto 3.428rem;
+		padding: 0 2.857rem 4.75rem;
 		box-sizing: border-box;
 		background: var(--paper);
 		color: var(--ink);
 		font-family: 'Open Sans', sans-serif;
 	}
 
-	.page-intro {
-		max-width: 37rem;
-		padding-bottom: 3.5rem;
+	.now-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.7fr) minmax(11rem, 0.8fr);
+		gap: clamp(3rem, 10vw, 8rem);
+		margin-top: clamp(3.5rem, 6vw, 5.8rem);
 	}
 
-	.eyebrow,
-	.updated {
-		margin: 0;
-		color: var(--muted-ink);
-		font-size: 0.74rem;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+	.now-content {
+		max-width: 38rem;
 	}
 
 	h1 {
-		margin: 0.8rem 0 1rem;
-		font-size: clamp(1.75rem, 3vw, 2.65rem);
-		font-weight: 700;
+		margin: 0;
+		font-family: 'Open Sans', sans-serif;
+		font-size: clamp(1.9rem, 3.1vw, 2.75rem);
+		font-weight: 400;
 		letter-spacing: -0.055em;
 		line-height: 1.08;
 	}
 
-	.page-intro > p:not(.eyebrow),
-	.now-section p {
-		margin: 0;
-		color: var(--muted-ink);
-		font-size: 1rem;
-		line-height: 1.7;
+	.now-explainer {
+		margin: 2.4rem 0 2.65rem;
+		color: var(--ink);
+		font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+		line-height: 1.76;
 	}
 
-	.now-section {
-		max-width: 37rem;
-		padding: 1.6rem 0;
-		border-top: 1px solid var(--rule);
+	.now-page a {
+		color: inherit;
+		text-decoration-color: rgba(197, 192, 182, 0.55);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
 	}
 
-	h2 {
-		margin: 0 0 0.55rem;
-		font-size: 0.78rem;
+	.now-page a:hover,
+	.now-page a:focus-visible {
+		color: #fffdf7;
+		text-decoration-color: currentColor;
+	}
+
+	.now-page a:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 3px;
+	}
+
+	.now-update h2,
+	.past-updates h2 {
+		margin: 0 0 2.15rem;
+		font-size: clamp(1.35rem, 2.25vw, 1.75rem);
 		font-weight: 700;
-		letter-spacing: 0.075em;
+		letter-spacing: -0.045em;
+		line-height: 1.15;
+	}
+
+	.now-update ul,
+	.past-updates ul {
+		margin: 0;
+		padding-left: 1.35rem;
+	}
+
+	.now-update li,
+	.past-updates li {
+		padding-left: 0.18rem;
+		font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+		line-height: 1.76;
+	}
+
+	.now-update li + li,
+	.past-updates li + li {
+		margin-top: 0.3rem;
+	}
+
+	.past-updates {
+		margin-top: 3.6rem;
+		border: 1px solid rgba(197, 192, 182, 0.04);
+		background: rgba(255, 255, 255, 0.018);
+	}
+
+	.past-updates summary {
+		padding: 1.55rem 1.85rem;
+		color: var(--ink);
+		cursor: pointer;
+		font-size: clamp(1.25rem, 2vw, 1.6rem);
+		letter-spacing: -0.04em;
+		line-height: 1;
+	}
+
+	.past-updates summary::marker {
+		font-size: 0.75em;
+	}
+
+	.past-updates > div {
+		padding: 0.35rem 1.85rem 1.85rem;
+	}
+
+	.past-updates h2 {
+		margin-bottom: 1rem;
+		font-size: 1rem;
+	}
+
+	.past-empty {
+		margin: 0;
+		font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+		line-height: 1.76;
+	}
+
+	.sidebar {
+		padding-top: 0.58rem;
+	}
+
+	.sidebar-section + .sidebar-section {
+		margin-top: 4.75rem;
+	}
+
+	.sidebar h2 {
+		margin: 0 0 2.2rem;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
 		text-transform: uppercase;
 	}
 
-	.updated {
-		margin-top: 2.4rem;
+	.sidebar ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
 	}
 
-	@media (max-width: 640px) {
+	.sidebar li + li {
+		margin-top: 0.8rem;
+	}
+
+	.sidebar a {
+		color: var(--muted-ink);
+		font-size: 0.9rem;
+	}
+
+	@media (max-width: 700px) {
 		.now-page {
 			width: calc(100% - 1.5rem);
-			margin: -1.5rem auto 1.5rem;
-			padding: 3rem 1.5rem;
+			margin: 0 auto 1.5rem;
+			padding: 0 1.5rem 3rem;
+		}
+
+		.now-layout {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+			margin-top: 3.25rem;
+		}
+
+		.now-explainer {
+			margin: 1.7rem 0 2.5rem;
+		}
+
+		.past-updates {
+			margin-top: 3rem;
+		}
+
+		.past-updates summary {
+			padding: 1.35rem 1.25rem;
+		}
+
+		.past-updates > div {
+			padding: 0.35rem 1.25rem 1.5rem;
+		}
+
+		.sidebar-section + .sidebar-section {
+			margin-top: 3.25rem;
 		}
 	}
 </style>

@@ -1,18 +1,211 @@
 ---
-import PageContent from './PageContent.astro';
+import { getCollection } from 'astro:content';
+import { formatNoteDate, noteHref } from '../lib/notes';
+
+const notes = (await getCollection('notes')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const [featured, ...recentNotes] = notes;
 ---
 
-<PageContent
-	eyebrow="Home"
-	title="A place to follow curiosity."
-	intro="Work, notes, and small observations from an ongoing practice of making and learning."
->
-	<section class="page-section">
-		<h2>Explore</h2>
-		<ul>
-			<li><a href="/work">Selected work</a></li>
-			<li><a href="/notes">Notes and observations</a></li>
-			<li><a href="/now">What I’m doing now</a></li>
-		</ul>
-	</section>
-</PageContent>
+<main class="home-page">
+	<div class="home-layout">
+		<section class="featured" aria-labelledby="featured-title">
+			<p class="section-label">Featured post</p>
+
+			{
+				featured && (
+					<article class="featured-card">
+						<a class="featured-link" href={noteHref(featured)}>
+							<p class="featured-category">{featured.data.category}</p>
+							<h1 id="featured-title">{featured.data.title}</h1>
+							<p class="featured-summary">
+								A quiet index for the things still taking shape: markets, technology, and the
+								small questions that are worth following.
+							</p>
+							<p class="featured-meta">{formatNoteDate(featured.data.date)} · Read note →</p>
+						</a>
+					</article>
+				)
+			}
+		</section>
+
+		<aside class="sidebar" aria-label="More from Justin Poh">
+			<section class="sidebar-section" aria-labelledby="latest-title">
+				<h2 id="latest-title">Latest notes</h2>
+				<ul>
+					{
+						recentNotes.map((note) => (
+							<li>
+								<a href={noteHref(note)}>{note.data.title}</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="sidebar-section" aria-labelledby="explore-title">
+				<h2 id="explore-title">Explore</h2>
+				<ul>
+					<li><a href="/work">Selected work</a></li>
+					<li><a href="/about">About me</a></li>
+					<li><a href="/now">What I’m doing now</a></li>
+				</ul>
+			</section>
+		</aside>
+	</div>
+</main>
+
+<style>
+	.home-page {
+		width: min(calc(100% - 2rem), 68.571rem);
+		margin: 0 auto 3.428rem;
+		padding: 3.75rem 2.857rem 4.75rem;
+		box-sizing: border-box;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	.home-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.65fr) minmax(11rem, 0.72fr);
+		gap: clamp(3rem, 9vw, 7.5rem);
+	}
+
+	.section-label {
+		margin: 0 0 2.35rem;
+		padding: 1.1rem 0;
+		border-top: 4px double var(--rule);
+		border-bottom: 4px double var(--rule);
+		color: var(--muted-ink);
+		font-size: 0.88rem;
+		line-height: 1;
+		text-align: center;
+	}
+
+	.featured-card {
+		border: 1px solid var(--rule);
+		background: rgba(255, 255, 255, 0.018);
+	}
+
+	.featured-link {
+		display: block;
+		min-height: 25rem;
+		padding: clamp(2rem, 6vw, 4.25rem);
+		box-sizing: border-box;
+		background:
+			linear-gradient(135deg, rgba(197, 192, 182, 0.06), transparent 52%),
+			repeating-linear-gradient(0deg, transparent 0, transparent 2.4rem, rgba(197, 192, 182, 0.045) 2.45rem);
+		color: inherit;
+		text-decoration: none;
+		transition: background-color 180ms ease;
+	}
+
+	.featured-link:hover,
+	.featured-link:focus-visible {
+		background-color: rgba(197, 192, 182, 0.045);
+		outline: none;
+	}
+
+	.featured-category,
+	.featured-meta {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 0.75rem;
+		letter-spacing: 0.065em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		max-width: 9.5em;
+		margin: 4.75rem 0 1.5rem;
+		font-size: clamp(2rem, 4.2vw, 3.75rem);
+		font-weight: 400;
+		letter-spacing: -0.06em;
+		line-height: 1.02;
+	}
+
+	.featured-summary {
+		max-width: 31rem;
+		margin: 0 0 3rem;
+		color: var(--muted-ink);
+		font-size: clamp(0.95rem, 1.25vw, 1.07rem);
+		line-height: 1.7;
+	}
+
+	.sidebar {
+		padding-top: 0.65rem;
+	}
+
+	.sidebar-section + .sidebar-section {
+		margin-top: 4.4rem;
+	}
+
+	.sidebar h2 {
+		margin: 0 0 2.2rem;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.055em;
+		text-transform: uppercase;
+	}
+
+	.sidebar ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.sidebar li + li {
+		margin-top: 0.8rem;
+	}
+
+	.sidebar a {
+		color: var(--muted-ink);
+		font-size: 0.92rem;
+		line-height: 1.45;
+		text-decoration-color: rgba(197, 192, 182, 0.5);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
+	}
+
+	.sidebar a:hover,
+	.sidebar a:focus-visible {
+		color: #fffdf7;
+		text-decoration-color: currentColor;
+	}
+
+	@media (max-width: 700px) {
+		.home-page {
+			width: calc(100% - 1.5rem);
+			margin: 0 auto 1.5rem;
+			padding: 3rem 1.5rem;
+		}
+
+		.home-layout {
+			grid-template-columns: 1fr;
+			gap: 3.25rem;
+		}
+
+		.section-label {
+			margin-bottom: 1.5rem;
+		}
+
+		.featured-link {
+			min-height: 21rem;
+			padding: 2rem;
+		}
+
+		h1 {
+			margin-top: 3.7rem;
+		}
+
+		.sidebar-section + .sidebar-section {
+			margin-top: 3.25rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.featured-link {
+			transition: none;
+		}
+	}
+</style>

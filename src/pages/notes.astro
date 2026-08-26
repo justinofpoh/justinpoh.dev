@@ -1,19 +1,123 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
-import PageContent from '../components/PageContent.astro';
+import { getCollection } from 'astro:content';
+import {
+	NOTE_CATEGORY_EMOJI,
+	formatNoteDate,
+	formatNoteDateISO,
+	groupNotesByYear,
+	noteHref,
+} from '../lib/notes';
+
+const notesByYear = groupNotesByYear(await getCollection('notes'));
 ---
 
 <Layout>
 	<Navbar />
-	<PageContent
-		eyebrow="Notes"
-		title="Notes from the workbench."
-		intro="Small observations about products, technology, craft, and the ideas that deserve a closer look."
-	>
-		<section class="page-section">
-			<h2>Latest</h2>
-			<p>Writing is on its way. In the meantime, the now page is the best view of what has my attention.</p>
-		</section>
-	</PageContent>
+	<main class="notes-page">
+		{
+			notesByYear.map(([year, notes]) => (
+				<section class="year-group" aria-labelledby={`year-${year}`}>
+					<h2 id={`year-${year}`}>{year}</h2>
+					<ul>
+						{notes.map((note) => {
+							const emoji = NOTE_CATEGORY_EMOJI[note.data.category];
+							const meta = note.data.tags.length
+								? `(_${note.data.category} ${emoji}, ${note.data.tags.join(', ')})`
+								: `(_${note.data.category} ${emoji})`;
+
+							return (
+								<li>
+									<time datetime={formatNoteDateISO(note.data.date)}>
+										{formatNoteDate(note.data.date)}
+									</time>
+									<span class="sep"> - </span>
+									<a
+										href={noteHref(note)}
+										target={note.data.external ? '_blank' : undefined}
+										rel={note.data.external ? 'noreferrer' : undefined}
+									>
+										{note.data.title}
+									</a>{' '}
+									<span class="meta">{meta}</span>
+								</li>
+							);
+						})}
+					</ul>
+				</section>
+			))
+		}
+	</main>
 </Layout>
+
+<style>
+	.notes-page {
+		width: min(calc(100% - 2rem), 68.571rem);
+		margin: 0 auto 3.428rem;
+		padding: 3.25rem 2.857rem 3.5rem;
+		box-sizing: border-box;
+		background: var(--paper);
+		color: var(--muted-ink);
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	.year-group + .year-group {
+		margin-top: 2.75rem;
+	}
+
+	h2 {
+		margin: 0 0 0.9rem;
+		color: var(--ink);
+		font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		line-height: 1.1;
+	}
+
+	ul {
+		margin: 0;
+		padding-left: 1.2rem;
+	}
+
+	li {
+		margin: 0.42rem 0;
+		font-size: 0.98rem;
+		line-height: 1.62;
+	}
+
+	time,
+	.sep,
+	.meta {
+		color: var(--muted-ink);
+	}
+
+	a {
+		color: #6ea8ff;
+		text-decoration: underline;
+		text-underline-offset: 0.16em;
+		text-decoration-thickness: 1px;
+	}
+
+	a:hover,
+	a:focus-visible {
+		color: #9ac4ff;
+	}
+
+	a:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 3px;
+	}
+
+	@media (max-width: 640px) {
+		.notes-page {
+			width: calc(100% - 1.5rem);
+			margin: 0 auto 1.5rem;
+			padding: 2.5rem 1.5rem 3rem;
+		}
+
+		li {
+			font-size: 0.92rem;
+		}
+	}
+</style>
