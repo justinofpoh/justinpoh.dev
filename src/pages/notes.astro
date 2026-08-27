@@ -2,13 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import { getCollection } from 'astro:content';
-import {
-	NOTE_CATEGORY_EMOJI,
-	formatNoteDate,
-	formatNoteDateISO,
-	groupNotesByYear,
-	noteHref,
-} from '../lib/notes';
+import { formatNoteDate, formatNoteDateISO, groupNotesByYear, noteHref } from '../lib/notes';
 
 const notesByYear = groupNotesByYear(await getCollection('notes'));
 ---
@@ -21,13 +15,7 @@ const notesByYear = groupNotesByYear(await getCollection('notes'));
 				<section class="year-group" aria-labelledby={`year-${year}`}>
 					<h2 id={`year-${year}`}>{year}</h2>
 					<ul>
-						{notes.map((note) => {
-							const emoji = NOTE_CATEGORY_EMOJI[note.data.category];
-							const meta = note.data.tags.length
-								? `(_${note.data.category} ${emoji}, ${note.data.tags.join(', ')})`
-								: `(_${note.data.category} ${emoji})`;
-
-							return (
+						{notes.map((note) => (
 								<li>
 									<time datetime={formatNoteDateISO(note.data.date)}>
 										{formatNoteDate(note.data.date)}
@@ -39,11 +27,10 @@ const notesByYear = groupNotesByYear(await getCollection('notes'));
 										rel={note.data.external ? 'noreferrer' : undefined}
 									>
 										{note.data.title}
-									</a>{' '}
-									<span class="meta">{meta}</span>
+									</a>
+									{note.data.tags.length > 0 && <span class="meta"> ({note.data.tags.join(', ')})</span>}
 								</li>
-							);
-						})}
+						))}
 					</ul>
 				</section>
 			))

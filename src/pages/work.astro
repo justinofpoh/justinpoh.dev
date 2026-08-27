@@ -10,10 +10,252 @@ import PageContent from '../components/PageContent.astro';
 		eyebrow="Work"
 		title="Selected work and experiments."
 		intro="An evolving index of projects, product thinking, and the practice behind the work."
+		hideIntro
 	>
-		<section class="page-section">
-			<h2>In progress</h2>
-			<p>Projects and case studies will gather here as they take shape.</p>
+		<section class="page-section featured-apps" aria-labelledby="featured-apps-title">
+			<div class="section-heading">
+				<h2 id="featured-apps-title">Featured apps</h2>
+				<p>Available on the App Store &amp; TestFlight</p>
+			</div>
+
+			<a
+				class="app-card"
+				href="https://apps.apple.com/id/app/coralfull/id6804615603?mt=12"
+				target="_blank"
+				rel="noreferrer"
+				aria-label="View CoralFull on the App Store"
+			>
+				<img src="/images/coralfull-app-icon.png" alt="CoralFull app icon" width="318" height="326" />
+				<span class="app-card__copy">
+					<span class="app-card__name">CoralFull</span>
+					<span class="app-card__description">Coral health monitoring, made more immediate.</span>
+					<span class="app-card__link">View on the App Store <span aria-hidden="true">↗</span></span>
+				</span>
+			</a>
+
+			<a
+				class="app-card"
+				href="https://apps.apple.com/id/app/aprecis-read-ai-papers/id6766909567?platform=mac"
+				target="_blank"
+				rel="noreferrer"
+				aria-label="View Aprecis on the Mac App Store"
+			>
+				<img src="/images/aprecis-app-icon.png" alt="Aprecis app icon" width="394" height="408" />
+				<span class="app-card__copy">
+					<span class="app-card__name">Aprecis</span>
+					<span class="app-card__description">A small app for reading AI papers.</span>
+					<span class="app-card__link">View on the Mac App Store <span aria-hidden="true">↗</span></span>
+				</span>
+			</a>
+
+			<a
+				class="app-card"
+				href="https://testflight.apple.com/join/g22s4qDM"
+				target="_blank"
+				rel="noreferrer"
+				aria-label="Join the PlantPal-CH4 beta on TestFlight"
+			>
+				<img src="/images/plantpal-app-icon.png" alt="PlantPal-CH4 app icon" width="224" height="200" />
+				<span class="app-card__copy">
+					<span class="app-card__name">PlantPal-CH4</span>
+					<span class="app-card__description">A beta app, available through TestFlight.</span>
+					<span class="app-card__link">Join the TestFlight beta <span aria-hidden="true">↗</span></span>
+				</span>
+			</a>
+		</section>
+
+		<section class="page-section other-works" aria-labelledby="other-works-title">
+			<div class="section-heading">
+				<h2 id="other-works-title">Other works</h2>
+			</div>
+
+			<article class="other-work">
+				<h3>FitU</h3>
+				<p>Gym Workout Tracker web app (my first web app!).</p>
+				<div class="other-work__actions">
+					<a href="https://github.com/justinofpoh/FitU" target="_blank" rel="noreferrer">
+						View on GitHub <span aria-hidden="true">↗</span>
+					</a>
+					<a href="https://www.youtube.com/watch?v=8H_CE-RKXso&amp;t=1s" target="_blank" rel="noreferrer">
+						Watch the demo <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</article>
 		</section>
 	</PageContent>
 </Layout>
+
+<style>
+	.featured-apps {
+		padding-top: 0;
+		border-top: 0;
+	}
+
+	.section-heading {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.section-heading h2 {
+		margin: 0;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.075em;
+		text-transform: uppercase;
+	}
+
+	.section-heading p {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 0.76rem;
+		letter-spacing: 0.02em;
+	}
+
+	.app-card {
+		display: grid;
+		grid-template-columns: 5.25rem minmax(0, 1fr);
+		align-items: center;
+		gap: 1.15rem;
+		padding: 0.95rem;
+		border: 1px solid var(--rule);
+		background: rgba(255, 255, 255, 0.018);
+		color: var(--ink);
+		text-decoration: none;
+		transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+	}
+
+	.app-card:hover {
+		border-color: rgba(197, 192, 182, 0.58);
+		background: rgba(255, 255, 255, 0.045);
+		transform: translateY(-2px);
+	}
+
+	.app-card + .app-card {
+		margin-top: 0.85rem;
+	}
+
+	.app-card:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 4px;
+	}
+
+	.app-card img {
+		display: block;
+		width: 5.25rem;
+		height: 5.25rem;
+		border-radius: 1.1rem;
+		box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.18);
+		object-fit: contain;
+	}
+
+	.app-card__copy,
+	.app-card__name,
+	.app-card__description,
+	.app-card__link {
+		display: block;
+	}
+
+	.other-works {
+		padding-bottom: 0;
+	}
+
+	.other-work {
+		padding: 1.15rem;
+		border: 1px solid var(--rule);
+		background: rgba(255, 255, 255, 0.018);
+		transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+	}
+
+	.other-work:hover,
+	.other-work:focus-within {
+		border-color: rgba(197, 192, 182, 0.58);
+		background: rgba(255, 255, 255, 0.045);
+		transform: translateY(-2px);
+	}
+
+	.other-work h3 {
+		margin: 0;
+		font-size: 1.2rem;
+		font-weight: 700;
+		letter-spacing: -0.04em;
+		line-height: 1.2;
+	}
+
+	.other-work p {
+		margin: 0.4rem 0 0;
+		color: var(--muted-ink);
+		font-size: 0.88rem;
+		line-height: 1.45;
+	}
+
+	.other-work__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45rem 2rem;
+		margin-top: 0.8rem;
+	}
+
+	.other-work__actions a {
+		color: var(--ink);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-decoration-color: rgba(197, 192, 182, 0.45);
+		text-underline-offset: 0.25em;
+		text-transform: uppercase;
+	}
+
+	.other-work a:hover,
+	.other-work a:focus-visible {
+		text-decoration-color: currentColor;
+	}
+
+	.other-work a:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 4px;
+	}
+
+	.app-card__name {
+		font-size: 1.2rem;
+		font-weight: 700;
+		letter-spacing: -0.04em;
+		line-height: 1.1;
+	}
+
+	.app-card__description {
+		margin-top: 0.35rem;
+		color: var(--muted-ink);
+		font-size: 0.88rem;
+		line-height: 1.45;
+	}
+
+	.app-card__link {
+		margin-top: 0.7rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	@media (max-width: 480px) {
+		.section-heading {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+
+		.app-card {
+			grid-template-columns: 4.5rem minmax(0, 1fr);
+			gap: 0.9rem;
+		}
+
+		.app-card img {
+			width: 4.5rem;
+			height: 4.5rem;
+			border-radius: 0.95rem;
+		}
+	}
+</style>
