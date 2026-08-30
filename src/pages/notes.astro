@@ -4,19 +4,30 @@ import Navbar from '../components/Navbar.astro';
 import { getCollection } from 'astro:content';
 import { formatNoteDate, formatNoteDateISO, groupNotesByYear, noteHref } from '../lib/notes';
 
-const notesByYear = groupNotesByYear(await getCollection('notes'));
+const notes = await getCollection('notes');
+const notesByYear = groupNotesByYear(notes);
+const tags = ['applehireme', 'curiouscat', 'worldview', 'appleacademy', 'chess'];
 ---
 
 <Layout>
 	<Navbar />
 	<main class="notes-page">
+		<nav class="tag-filters" aria-label="Filter notes by tag">
+			<span class="filter-label">Filter by:</span>
+			<button class="tag-filter" type="button" data-tag-filter="all" aria-pressed="true">All notes</button>
+			{
+				tags.map((tag) => (
+					<button class="tag-filter" type="button" data-tag-filter={tag} aria-pressed="false">#{tag}</button>
+				))
+			}
+		</nav>
 		{
 			notesByYear.map(([year, notes]) => (
-				<section class="year-group" aria-labelledby={`year-${year}`}>
+				<section class="year-group" aria-labelledby={`year-${year}`} data-year-group>
 					<h2 id={`year-${year}`}>{year}</h2>
 					<ul>
 						{notes.map((note) => (
-								<li>
+								<li data-note-entry data-tags={note.data.tags.join(' ')}>
 									<time datetime={formatNoteDateISO(note.data.date)}>
 										{formatNoteDate(note.data.date)}
 									</time>
@@ -28,14 +39,45 @@ const notesByYear = groupNotesByYear(await getCollection('notes'));
 									>
 										{note.data.title}
 									</a>
-									{note.data.tags.length > 0 && <span class="meta"> ({note.data.tags.join(', ')})</span>}
+									{note.data.tags.length > 0 && <span class="meta"> ({note.data.tags.map((tag) => `#${tag}`).join(', ')})</span>}
 								</li>
 						))}
 					</ul>
 				</section>
 			))
 		}
+		<p class="empty-filter" data-empty-filter hidden>No notes here yet.</p>
 	</main>
+
+	<script>
+		const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-tag-filter]');
+		const noteEntries = document.querySelectorAll<HTMLElement>('[data-note-entry]');
+		const yearGroups = document.querySelectorAll<HTMLElement>('[data-year-group]');
+		const emptyFilter = document.querySelector<HTMLElement>('[data-empty-filter]');
+
+		filterButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const selectedTag = button.dataset.tagFilter;
+
+				noteEntries.forEach((entry) => {
+					const entryTags = entry.dataset.tags?.split(' ') ?? [];
+					entry.hidden = selectedTag !== 'all' && !entryTags.includes(selectedTag ?? '');
+				});
+
+				yearGroups.forEach((group) => {
+					group.hidden = [...group.querySelectorAll<HTMLElement>('[data-note-entry]')].every((entry) => entry.hidden);
+				});
+
+				if (emptyFilter) {
+					emptyFilter.hidden = ![...noteEntries].every((entry) => entry.hidden);
+				}
+
+				filterButtons.forEach((filter) => {
+					filter.setAttribute('aria-pressed', String(filter === button));
+				});
+			});
+		});
+	</script>
 </Layout>
 
 <style>
@@ -51,6 +93,55 @@ const notesByYear = groupNotesByYear(await getCollection('notes'));
 
 	.year-group + .year-group {
 		margin-top: 2.75rem;
+	}
+
+	.tag-filters {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.45rem 1.15rem;
+		margin: 0 0 2.6rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--rule);
+	}
+
+	.filter-label {
+		color: var(--ink);
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.025em;
+		line-height: 1.35;
+	}
+
+	.tag-filter {
+		padding: 0.15rem 0;
+		border: 0;
+		border-bottom: 1px solid transparent;
+		background: transparent;
+		color: var(--muted-ink);
+		cursor: pointer;
+		font: inherit;
+		font-size: 0.76rem;
+		letter-spacing: 0.025em;
+		line-height: 1.35;
+	}
+
+	.tag-filter:hover,
+	.tag-filter[aria-pressed='true'] {
+		border-bottom-color: currentColor;
+		color: var(--ink);
+	}
+
+	.tag-filter:focus-visible {
+		outline: 2px solid var(--ink);
+		outline-offset: 3px;
+	}
+
+	.empty-filter {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 0.95rem;
+		line-height: 1.6;
 	}
 
 	h2 {
@@ -74,9 +165,13 @@ const notesByYear = groupNotesByYear(await getCollection('notes'));
 	}
 
 	time,
-	.sep,
-	.meta {
+	.sep {
 		color: var(--muted-ink);
+	}
+
+	.meta {
+		color: rgba(170, 165, 155, 0.65);
+		font-size: 0.9em;
 	}
 
 	a {

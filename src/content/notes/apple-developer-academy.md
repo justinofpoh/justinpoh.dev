@@ -1,9 +1,9 @@
 ---
-title: Notes from the Apple Developer Academy
+title: First Date with Swift
 date: 2026-08-27
 category: Lab Notes
 tags:
-  - Apple Academy
+  - applehireme
 ---
 
 A few months into the Academy, the useful lesson is still the same: make something small, put it in front of people, and notice where the story falls apart.
