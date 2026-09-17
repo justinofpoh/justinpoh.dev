@@ -41,18 +41,22 @@ const featuredSummary = featured ? noteExcerpt(featured.body) : '';
 		</section>
 
 		<aside class="sidebar" aria-label="More from Justin Poh">
-			<section class="sidebar-section" aria-labelledby="latest-title">
-				<h2 id="latest-title">Latest notes</h2>
-				<ul>
-					{
-						recentNotes.map((note) => (
-							<li>
-								<a href={noteHref(note)}>{note.data.title}</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+			{
+				recentNotes.length > 0 && (
+					<section class="sidebar-section" aria-labelledby="latest-title">
+						<h2 id="latest-title">Latest notes</h2>
+						<ul>
+							{
+								recentNotes.map((note) => (
+									<li>
+										<a href={noteHref(note)}>{note.data.title}</a>
+									</li>
+								))
+							}
+						</ul>
+					</section>
+				)
+			}
 
 			<section class="sidebar-section" aria-labelledby="explore-title">
 				<h2 id="explore-title">Explore</h2>
