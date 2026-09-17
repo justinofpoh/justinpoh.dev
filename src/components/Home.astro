@@ -1,9 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import { formatNoteDate, noteHref } from '../lib/notes';
+import { formatNoteDate, noteExcerpt, noteHref, pickFeaturedNote } from '../lib/notes';
 
 const notes = (await getCollection('notes')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const [featured, ...recentNotes] = notes;
+const featured = pickFeaturedNote(notes);
+const recentNotes = notes.filter((note) => note.id !== featured?.id);
+const featuredSummary = featured ? noteExcerpt(featured.body) : '';
 ---
 
 <main class="home-page">
@@ -15,15 +17,23 @@ const [featured, ...recentNotes] = notes;
 				featured && (
 					<article class="featured-card">
 						<a class="featured-link" href={noteHref(featured)}>
-							{featured.data.tags.length > 0 && (
-								<p class="featured-tags">{featured.data.tags.map((tag) => `#${tag}`).join(' ')}</p>
-							)}
-							<h1 id="featured-title">{featured.data.title}</h1>
-							<p class="featured-summary">
-								A quiet index for the things still taking shape: markets, technology, and the
-								small questions that are worth following.
-							</p>
-							<p class="featured-meta">{formatNoteDate(featured.data.date)} · Read note →</p>
+							{
+								featured.data.thumbnail && (
+									<img
+										class="featured-thumb"
+										src={featured.data.thumbnail}
+										alt=""
+									/>
+								)
+							}
+							<div class="featured-copy">
+								{featured.data.tags.length > 0 && (
+									<p class="featured-tags">{featured.data.tags.map((tag) => `#${tag}`).join(' ')}</p>
+								)}
+								<h1 id="featured-title">{featured.data.title}</h1>
+								{featuredSummary && <p class="featured-summary">{featuredSummary}</p>}
+								<p class="featured-meta">{formatNoteDate(featured.data.date)} · Read note →</p>
+							</div>
 						</a>
 					</article>
 				)
@@ -85,18 +95,13 @@ const [featured, ...recentNotes] = notes;
 	}
 
 	.featured-card {
+		overflow: hidden;
 		border: 1px solid var(--rule);
 		background: rgba(255, 255, 255, 0.018);
 	}
 
 	.featured-link {
 		display: block;
-		min-height: 25rem;
-		padding: clamp(2rem, 6vw, 4.25rem);
-		box-sizing: border-box;
-		background:
-			linear-gradient(135deg, rgba(197, 192, 182, 0.06), transparent 52%),
-			repeating-linear-gradient(0deg, transparent 0, transparent 2.4rem, rgba(197, 192, 182, 0.045) 2.45rem);
 		color: inherit;
 		text-decoration: none;
 		transition: background-color 180ms ease;
@@ -106,6 +111,21 @@ const [featured, ...recentNotes] = notes;
 	.featured-link:focus-visible {
 		background-color: rgba(197, 192, 182, 0.045);
 		outline: none;
+	}
+
+	.featured-thumb {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-height: 22rem;
+		object-fit: contain;
+		object-position: center;
+		background: #f4f1ea;
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.featured-copy {
+		padding: clamp(1.6rem, 4vw, 2.4rem) clamp(1.6rem, 4vw, 2.6rem) clamp(1.8rem, 4vw, 2.6rem);
 	}
 
 	.featured-tags,
@@ -121,17 +141,17 @@ const [featured, ...recentNotes] = notes;
 	}
 
 	h1 {
-		max-width: 9.5em;
-		margin: 4.75rem 0 1.5rem;
-		font-size: clamp(2rem, 4.2vw, 3.75rem);
+		max-width: 14em;
+		margin: 0.85rem 0 1rem;
+		font-size: clamp(1.7rem, 3.4vw, 2.7rem);
 		font-weight: 400;
 		letter-spacing: -0.06em;
-		line-height: 1.02;
+		line-height: 1.08;
 	}
 
 	.featured-summary {
-		max-width: 31rem;
-		margin: 0 0 3rem;
+		max-width: 36rem;
+		margin: 0 0 1.6rem;
 		color: var(--muted-ink);
 		font-size: clamp(0.95rem, 1.25vw, 1.07rem);
 		line-height: 1.7;
@@ -194,13 +214,12 @@ const [featured, ...recentNotes] = notes;
 			margin-bottom: 1.5rem;
 		}
 
-		.featured-link {
-			min-height: 21rem;
-			padding: 2rem;
+		.featured-thumb {
+			max-height: 14rem;
 		}
 
-		h1 {
-			margin-top: 3.7rem;
+		.featured-copy {
+			padding: 1.5rem;
 		}
 
 		.sidebar-section + .sidebar-section {

@@ -18,6 +18,26 @@ export function noteHref(note: CollectionEntry<'notes'>) {
 	return note.data.external ?? `/notes/${note.id}`;
 }
 
+export function noteExcerpt(body: string, sentenceCount = 2) {
+	const paragraph = body
+		.replace(/\r\n/g, '\n')
+		.split(/\n{2,}/)
+		.map((block) => block.trim())
+		.find((block) => block && !/^[#>`!\-\[]/.test(block) && !block.startsWith('```'));
+
+	if (!paragraph) return '';
+
+	const text = paragraph.replace(/\s+/g, ' ');
+	const sentences = text.match(/[^.!?]+[.!?]+/g);
+	if (!sentences) return text;
+	return sentences.slice(0, sentenceCount).map((sentence) => sentence.trim()).join(' ');
+}
+
+export function pickFeaturedNote(notes: CollectionEntry<'notes'>[]) {
+	const dated = [...notes].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+	return dated.find((note) => note.data.featured) ?? dated[0];
+}
+
 export function groupNotesByYear(notes: CollectionEntry<'notes'>[]) {
 	const grouped = new Map<number, CollectionEntry<'notes'>[]>();
 

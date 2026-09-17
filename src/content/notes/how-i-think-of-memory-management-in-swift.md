@@ -3,6 +3,8 @@ title: How I think of memory management in Swift
 date: 2026-09-17
 tags:
   - appleacademy
+featured: true
+thumbnail: /images/notes/swift-arc-alice-bob.jpg
 ---
 
 Personally, mental models and analogies are very fun ways to learn abstract concepts. Recently, I saw first hand the profound value of asking "why" when learning concepts. A question as simple as "Why is it called xx" can go a long way for memory (turns out many things are linked to references you already know!).
