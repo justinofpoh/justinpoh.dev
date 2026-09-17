@@ -7,6 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "predev": "node scripts/build-protege-team.mjs",
+    "prebuild": "node scripts/build-protege-team.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

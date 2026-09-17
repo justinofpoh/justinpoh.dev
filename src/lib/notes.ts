@@ -1,13 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
 
-export const NOTE_CATEGORY_EMOJI = {
-	Essay: '📝',
-	Tech: '💻',
-	'Lab Notes': '🧪',
-	Micropost: '🍪',
-	'Twitter Archive': '🐣',
-} as const;
-
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function formatNoteDateISO(date: Date) {
@@ -16,6 +8,10 @@ export function formatNoteDateISO(date: Date) {
 
 export function formatNoteDate(date: Date) {
 	return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
+export function formatNoteTags(tags: string[]) {
+	return tags.map((tag) => `#${tag}`).join(', ');
 }
 
 export function noteHref(note: CollectionEntry<'notes'>) {

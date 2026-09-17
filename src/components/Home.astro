@@ -15,7 +15,9 @@ const [featured, ...recentNotes] = notes;
 				featured && (
 					<article class="featured-card">
 						<a class="featured-link" href={noteHref(featured)}>
-							<p class="featured-category">{featured.data.category}</p>
+							{featured.data.tags.length > 0 && (
+								<p class="featured-tags">{featured.data.tags.map((tag) => `#${tag}`).join(' ')}</p>
+							)}
 							<h1 id="featured-title">{featured.data.title}</h1>
 							<p class="featured-summary">
 								A quiet index for the things still taking shape: markets, technology, and the
@@ -106,12 +108,15 @@ const [featured, ...recentNotes] = notes;
 		outline: none;
 	}
 
-	.featured-category,
+	.featured-tags,
 	.featured-meta {
 		margin: 0;
 		color: var(--muted-ink);
 		font-size: 0.75rem;
 		letter-spacing: 0.065em;
+	}
+
+	.featured-meta {
 		text-transform: uppercase;
 	}
 

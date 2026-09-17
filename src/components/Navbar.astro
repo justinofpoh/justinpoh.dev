@@ -1,5 +1,5 @@
 ---
-const pathname = Astro.url.pathname;
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const links = [
 	{ label: 'Home', href: '/' },
 	{ label: 'About', href: '/about' },
@@ -7,6 +7,11 @@ const links = [
 	{ label: 'Notes', href: '/notes' },
 	{ label: 'Now', href: '/now' },
 ];
+
+function isCurrentPage(href: string) {
+	if (href === '/') return pathname === '/';
+	return pathname === href || pathname.startsWith(`${href}/`);
+}
 ---
 
 <header class="site-header">
@@ -18,13 +23,20 @@ const links = [
 	<nav class="navbar" aria-label="Primary navigation">
 		<ul class="nav-links">
 			{
-				links.map(({ label, href }) => (
-					<li>
-						<a href={href} aria-current={pathname === href ? 'page' : undefined}>
-							{label}
-						</a>
-					</li>
-				))
+				links.map(({ label, href }) => {
+					const current = isCurrentPage(href);
+					return (
+						<li>
+							<a
+								class:list={{ 'is-current': current }}
+								href={href}
+								aria-current={current ? 'page' : undefined}
+							>
+								{label}
+							</a>
+						</li>
+					);
+				})
 			}
 		</ul>
 	</nav>
@@ -152,13 +164,13 @@ const links = [
 
 	.nav-links a:hover,
 	.nav-links a:focus-visible,
-	.nav-links a[aria-current='page'] {
+	.nav-links a.is-current {
 		color: var(--ink);
 	}
 
 	.nav-links a:hover::after,
 	.nav-links a:focus-visible::after,
-	.nav-links a[aria-current='page']::after {
+	.nav-links a.is-current::after {
 		transform: scaleX(1);
 		transform-origin: left;
 	}

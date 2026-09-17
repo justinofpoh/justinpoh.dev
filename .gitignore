@@ -1,5 +1,6 @@
 # build output
 dist/
+public/protege-team.html
 
 # generated types
 .astro/

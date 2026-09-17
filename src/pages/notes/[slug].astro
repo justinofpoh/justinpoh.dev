@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import { getCollection, render } from 'astro:content';
-import { NOTE_CATEGORY_EMOJI, formatNoteDate, formatNoteDateISO } from '../../lib/notes';
+import { formatNoteDate, formatNoteDateISO, formatNoteTags } from '../../lib/notes';
 
 export async function getStaticPaths() {
 	const notes = await getCollection('notes', ({ data }) => !data.external);
@@ -14,12 +14,9 @@ export async function getStaticPaths() {
 
 const { note } = Astro.props;
 const { Content } = await render(note);
-const emoji = NOTE_CATEGORY_EMOJI[note.data.category];
 const date = formatNoteDate(note.data.date);
 const dateISO = formatNoteDateISO(note.data.date);
-const meta = note.data.tags.length
-	? `_${note.data.category} ${emoji}, ${note.data.tags.join(', ')}`
-	: `_${note.data.category} ${emoji}`;
+const tags = formatNoteTags(note.data.tags);
 ---
 
 <Layout>
@@ -28,7 +25,7 @@ const meta = note.data.tags.length
 		<article>
 			<p class="meta">
 				<time datetime={dateISO}>{date}</time>
-				<span> · {meta}</span>
+				{tags && <span> · {tags}</span>}
 			</p>
 			<h1>{note.data.title}</h1>
 			<div class="body">
@@ -51,7 +48,8 @@ const meta = note.data.tags.length
 	}
 
 	article {
-		max-width: 40rem;
+		width: 100%;
+		max-width: none;
 	}
 
 	.meta {
@@ -69,11 +67,83 @@ const meta = note.data.tags.length
 		line-height: 1.12;
 	}
 
-	.body :global(p) {
-		margin: 0 0 1.15rem;
+	.body :global(p),
+	.body :global(li) {
+		margin: 0 0 1.25rem;
 		color: var(--muted-ink);
-		font-size: 1.02rem;
-		line-height: 1.72;
+		font-size: 1.2rem;
+		line-height: 1.75;
+	}
+
+	.body :global(img) {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+		margin: 2.2rem 0;
+		border-radius: 0.35rem;
+	}
+
+	.body :global(a) {
+		color: #6ea8ff;
+		text-underline-offset: 0.16em;
+	}
+
+	.body :global(em),
+	.body :global(strong) {
+		color: var(--ink);
+	}
+
+	.body :global(h2),
+	.body :global(h3) {
+		margin: 2rem 0 0.8rem;
+		color: var(--ink);
+		letter-spacing: -0.04em;
+		line-height: 1.2;
+	}
+
+	.body :global(blockquote) {
+		margin: 1.6rem 0;
+		padding: 0.2rem 0 0.2rem 1.1rem;
+		border-left: 2px solid var(--rule);
+	}
+
+	.body :global(blockquote p) {
+		margin: 0;
+		color: var(--muted-ink);
+		font-size: 1.2rem;
+		line-height: 1.75;
+	}
+
+	.body :global(blockquote p + p) {
+		margin-top: 0.85rem;
+	}
+
+	.body :global(code) {
+		padding: 0.1em 0.35em;
+		border-radius: 0.25rem;
+		background: rgba(197, 192, 182, 0.08);
+		color: var(--ink);
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+		font-size: 0.88em;
+	}
+
+	.body :global(pre) {
+		margin: 1.6rem 0;
+		padding: 1.1rem 1.25rem;
+		overflow-x: auto;
+		border: 1px solid var(--rule);
+		border-radius: 0.35rem;
+		background: #1b1c1b !important;
+		font-size: 0.95rem;
+		line-height: 1.6;
+		tab-size: 4;
+	}
+
+	.body :global(pre code) {
+		padding: 0;
+		background: transparent;
+		font-size: inherit;
 	}
 
 	.back {
