@@ -1,16 +1,31 @@
 export const SITE_ORIGIN = 'https://www.justinpoh.dev';
 
+/** GitHub Gist URLs in fence order. Medium's importer drops <pre>/<code> but embeds gist links. */
+export const MEDIUM_GISTS: Record<string, string[]> = {
+	'how-i-think-of-memory-management-in-swift': [
+		'https://gist.github.com/justinofpoh/92f0e42f56b93d1acf7fbf3cc24512e4',
+		'https://gist.github.com/justinofpoh/2abb37c017ac9a5893aa6bad9b070f70',
+		'https://gist.github.com/justinofpoh/b9a1b0df6a9ccaaac86a3125967e0262',
+		'https://gist.github.com/justinofpoh/2891fde0b8cfde2b3f6cec96c2f58612',
+	],
+};
+
 export function stripFrontmatter(source: string) {
 	return source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
 }
 
-export function noteToMediumHtml(markdown: string) {
+export function noteToMediumHtml(markdown: string, gistUrls: string[] = []) {
 	const fences: string[] = [];
 	let source = markdown.replace(/\r\n/g, '\n').trim();
+	let fenceIndex = 0;
 
 	source = source.replace(/```[a-zA-Z0-9]*\n([\s\S]*?)```/g, (_, code: string) => {
-		const escaped = escapeHtml(code.replace(/\t/g, '  ').replace(/\n$/, ''));
-		const index = fences.push(`<pre><code>${escaped}\n</code></pre>`) - 1;
+		const gist = gistUrls[fenceIndex];
+		fenceIndex += 1;
+		const html = gist
+			? `<p>${gist}</p>`
+			: `<pre><code>${escapeHtml(code.replace(/\t/g, '  ').replace(/\n$/, ''))}\n</code></pre>`;
+		const index = fences.push(html) - 1;
 		return `\n\n%%FENCE${index}%%\n\n`;
 	});
 

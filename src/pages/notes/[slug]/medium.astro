@@ -1,7 +1,7 @@
 ---
 import fs from 'node:fs/promises';
 import { getCollection } from 'astro:content';
-import { noteToMediumHtml, SITE_ORIGIN, stripFrontmatter } from '../../../lib/mediumHtml';
+import { MEDIUM_GISTS, noteToMediumHtml, SITE_ORIGIN, stripFrontmatter } from '../../../lib/mediumHtml';
 
 export async function getStaticPaths() {
 	const notes = await getCollection('notes', ({ data }) => !data.external);
@@ -16,7 +16,7 @@ const canonical = `${SITE_ORIGIN}/notes/${note.id}`;
 const source = note.filePath
 	? stripFrontmatter(await fs.readFile(note.filePath, 'utf8'))
 	: (note.body ?? '');
-const html = noteToMediumHtml(source);
+const html = noteToMediumHtml(source, MEDIUM_GISTS[note.id] ?? []);
 ---
 
 <!doctype html>
