@@ -74,6 +74,13 @@ const latestNotes = (await getCollection('notes'))
 						<li><a href="https://www.linkedin.com/in/justinofpoh/" target="_blank" rel="noreferrer">LinkedIn</a></li>
 					</ul>
 				</section>
+
+				<section class="sidebar-section" aria-labelledby="contact-me">
+					<h2 id="contact-me">Contact me</h2>
+					<ul>
+						<li><a href="mailto:justin.poh.2024@computing.smu.edu.sg">justin.poh.2024@computing.smu.edu.sg</a></li>
+					</ul>
+				</section>
 			</aside>
 		</div>
 	</main>
@@ -226,6 +233,7 @@ const latestNotes = (await getCollection('notes'))
 	.sidebar a {
 		color: var(--muted-ink);
 		font-size: 0.9rem;
+		overflow-wrap: anywhere;
 	}
 
 	@media (max-width: 700px) {

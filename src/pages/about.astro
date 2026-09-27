@@ -11,6 +11,11 @@ import Navbar from '../components/Navbar.astro';
 				<h1>Who’s justin poh?</h1>
 				<figure class="portrait portrait-mobile">
 					<img src="/images/about-photo.jpg" alt="Justin Poh" />
+					<figcaption>
+						<a class="not-by-ai" href="https://notbyai.fyi/" target="_blank" rel="noreferrer">
+							<img src="/images/photographed-by-human-badge.png" alt="Photographed by a human, not by AI" width="131" height="42" />
+						</a>
+					</figcaption>
 				</figure>
 				<p>
 					I’m a penultimate student at Singapore Management University studying Information Systems. Currently, I am away from school to pursue development in Apple platforms at the{' '}
@@ -48,10 +53,6 @@ import Navbar from '../components/Navbar.astro';
 							GitHub:{' '}
 							<a href="https://github.com/justinofpoh" target="_blank" rel="noreferrer">justinofpoh</a>
 						</li>
-						<li>
-							Email:{' '}
-							<a href="mailto:justin.poh.2024@computing.smu.edu.sg">justin.poh.2024@computing.smu.edu.sg</a>
-						</li>
 					</ul>
 				</section>
 			</article>
@@ -59,12 +60,21 @@ import Navbar from '../components/Navbar.astro';
 			<aside class="sidebar" aria-label="Explore the site">
 				<figure class="portrait portrait-desktop">
 					<img src="/images/about-photo.jpg" alt="Justin Poh" />
+					<figcaption>
+						<a class="not-by-ai" href="https://notbyai.fyi/" target="_blank" rel="noreferrer">
+							<img src="/images/photographed-by-human-badge.png" alt="Photographed by a human, not by AI" width="131" height="42" />
+						</a>
+					</figcaption>
 				</figure>
 				<h2>Elsewhere</h2>
 				<ul>
 					<li><a href="/work">Selected work</a></li>
 					<li><a href="/notes">Notes</a></li>
 					<li><a href="/now">Now</a></li>
+				</ul>
+				<h2 class="contact-title">Contact me</h2>
+				<ul>
+					<li><a href="mailto:justin.poh.2024@computing.smu.edu.sg">justin.poh.2024@computing.smu.edu.sg</a></li>
 				</ul>
 			</aside>
 		</div>
@@ -153,24 +163,43 @@ import Navbar from '../components/Navbar.astro';
 	}
 
 	.portrait {
-		width: min(100%, 12rem);
-		aspect-ratio: 1;
+		width: min(100%, 14rem);
 		margin: 0 0 3.25rem;
-		overflow: hidden;
-		border-radius: 0.35rem;
-		background: #2a2c2b;
 	}
 
 	.portrait-mobile {
 		display: none;
 	}
 
-	.portrait img {
+	.portrait > img {
 		display: block;
 		width: 100%;
-		height: 100%;
+		aspect-ratio: 1;
+		border-radius: 0.35rem;
+		background: #2a2c2b;
 		object-fit: cover;
 		object-position: center 36%;
+	}
+
+	.portrait figcaption {
+		margin-top: 0.7rem;
+	}
+
+	.not-by-ai {
+		display: inline-block;
+		opacity: 0.6;
+		transition: opacity 150ms ease;
+	}
+
+	.not-by-ai:hover,
+	.not-by-ai:focus-visible {
+		opacity: 1;
+	}
+
+	.not-by-ai img {
+		display: block;
+		width: 6.5rem;
+		height: auto;
 	}
 
 	.sidebar h2 {
@@ -194,6 +223,11 @@ import Navbar from '../components/Navbar.astro';
 	.sidebar a {
 		color: var(--muted-ink);
 		font-size: 0.9rem;
+		overflow-wrap: anywhere;
+	}
+
+	.sidebar .contact-title {
+		margin-top: 3.25rem;
 	}
 
 	@media (max-width: 700px) {
@@ -245,6 +279,10 @@ import Navbar from '../components/Navbar.astro';
 
 		.sidebar h2 {
 			margin-bottom: 1rem;
+		}
+
+		.sidebar .contact-title {
+			margin-top: 2rem;
 		}
 
 		.sidebar ul {
